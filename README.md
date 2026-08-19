@@ -46,7 +46,7 @@ Example:
 ```json
 {
 	"features": {
-		"ghcr.io/anthuanvasquez/skills/skills:latest": {
+		"ghcr.io/anthuanvasquez/skills/features:latest": {
 			"platforms": "none"
 		}
 	}
