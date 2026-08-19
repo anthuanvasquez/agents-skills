@@ -1,0 +1,9 @@
+{
+  "name": "Skills Feature Consumer",
+  "image": "ghcr.io/anthuanvasquez/agentic-container:latest",
+  "features": {
+    "ghcr.io/anthuanvasquez/skills/features:0.2.0": {
+      "platforms": "copilot"
+    }
+  }
+}
