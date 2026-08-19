@@ -1,104 +1,17 @@
 name: "Release Dev Container Features"
 
 on:
-  workflow_dispatch:
-    inputs:
-      release_type:
-        description: "Version bump type"
-        required: true
-        default: "patch"
-        type: choice
-        options:
-          - patch
-          - minor
-          - major
   push:
-    branches:
-      - main
-
-concurrency:
-  group: release-devcontainer-features
-  cancel-in-progress: false
+    tags:
+      - "v*"
 
 jobs:
   deploy:
-    if: ${{ github.ref == 'refs/heads/main' && github.actor != 'github-actions[bot]' }}
     runs-on: ubuntu-latest
     permissions:
-      contents: write
-      pull-requests: write
       packages: write
-    env:
-      RELEASE_TYPE: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.release_type || 'patch' }}
-      FEATURE_MANIFEST: src/skills/devcontainer-feature.json
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: "Bump feature version"
-        id: bump
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          python3 - <<'PY'
-          import json
-          import os
-          from pathlib import Path
-
-          manifest_path = Path(os.environ["FEATURE_MANIFEST"])
-          release_type = os.environ.get("RELEASE_TYPE", "patch")
-
-          data = json.loads(manifest_path.read_text())
-          current = data.get("version", "0.1.0")
-          parts = current.split(".")
-          if len(parts) != 3 or not all(p.isdigit() for p in parts):
-              raise SystemExit(f"Invalid semver in {manifest_path}: {current}")
-
-          major, minor, patch = [int(p) for p in parts]
-          if release_type == "major":
-              major, minor, patch = major + 1, 0, 0
-          elif release_type == "minor":
-              minor, patch = minor + 1, 0
-          elif release_type == "patch":
-              patch += 1
-          else:
-              raise SystemExit(f"Unsupported release_type: {release_type}")
-
-          new_version = f"{major}.{minor}.{patch}"
-          data["version"] = new_version
-          manifest_path.write_text(json.dumps(data, indent=2) + "\n")
-          print(new_version)
-          PY
-
-          NEW_VERSION="$(python3 - <<'PY'
-          import json
-          with open('src/skills/devcontainer-feature.json', 'r', encoding='utf-8') as fh:
-              print(json.load(fh)['version'])
-          PY
-          )"
-
-          echo "new_version=$NEW_VERSION" >> "$GITHUB_OUTPUT"
-
-      - name: "Commit and tag release"
-        shell: bash
-        run: |
-          set -euo pipefail
-          VERSION="${{ steps.bump.outputs.new_version }}"
-
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-
-          git add "${FEATURE_MANIFEST}"
-          if git diff --cached --quiet; then
-            echo "No version changes detected"
-            exit 0
-          fi
-
-          git commit -m "chore(release): bump skills feature to v${VERSION} [skip ci]"
-          git tag "v${VERSION}"
-          git push origin HEAD:main --follow-tags
 
       - name: "Publish Features"
         uses: devcontainers/action@v1
