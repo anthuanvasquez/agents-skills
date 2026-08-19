@@ -1,0 +1,43 @@
+name: "Validate Dev Container Feature"
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: "Validate devcontainer-feature.json"
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          manifest_path = Path("src/features/devcontainer-feature.json")
+          data = json.loads(manifest_path.read_text())
+
+          required = {"id", "version", "name", "description"}
+          missing = required - data.keys()
+          if missing:
+              raise SystemExit(f"Missing required keys: {missing}")
+
+          version = data.get("version", "")
+          parts = version.split(".")
+          if len(parts) != 3 or not all(p.isdigit() for p in parts):
+              raise SystemExit(f"Invalid semver: {version}")
+
+          print(f"Feature '{data['id']}' v{data['version']} is valid.")
+          PY
+
+      - name: "Shellcheck install scripts"
+        run: |
+          set -euo pipefail
+          shellcheck src/features/install.sh src/features/scripts/install-core.sh
