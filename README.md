@@ -117,9 +117,10 @@ docker run -it -v $(pwd):/home/testuser/skills test-skills-installer bash
 # inside container
 cd /home/testuser/skills
 ./install.sh --platforms gemini --non-interactive
-./test-install.sh
+./install-test.sh
+
 # or explicit
-./test-install.sh --platforms gemini
+./install-test.sh --platforms gemini
 ```
 
 ## License
