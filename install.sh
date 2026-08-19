@@ -100,7 +100,7 @@ load_core() {
 
   if [ -n "$SOURCE_DIR_OVERRIDE" ]; then
     source_dir="$SOURCE_DIR_OVERRIDE"
-  elif [ -d "skills" ] && [ -d "prompts" ] && [ -f "scripts/install-core.sh" ]; then
+  elif [ -d "src/features/skills" ] && [ -f "src/features/scripts/install-core.sh" ]; then
     source_dir="$(pwd)"
     echo "Using local source files."
   else
@@ -109,8 +109,8 @@ load_core() {
   fi
 
   # shellcheck source=/dev/null
-  . "$source_dir/scripts/install-core.sh"
-  SKILLS_SOURCE_DIR="$source_dir"
+  . "$source_dir/src/features/scripts/install-core.sh"
+  SKILLS_SOURCE_DIR="$source_dir/src/features"
 }
 
 cleanup() {
