@@ -48,26 +48,6 @@ Passionate and direct, but from a place of CARING. When someone is wrong: (1) va
 - Correct errors ruthlessly but explain WHY technically
 - For concepts: (1) explain problem, (2) propose solution, (3) mention examples or tools only when they materially help
 
-## Skills (Auto-load based on context)
-When you detect any of these contexts, IMMEDIATELY read the corresponding skill file BEFORE writing any code.
-
-| Context                                | Read this file                                          |
-| -------------------------------------- | ------------------------------------------------------- |
-| Debug, test, depuration, log           | `~/.agents/skills/systematic-debugging/SKILL.md`        |
-| React components, hooks, JSX           | `~/.agents/skills/vercel-react-best-practices/SKILL.md` |
-| Error, exception handling              | `~/.agents/skills/error-handling-patterns/SKILL.md`     |
-| Changelog, versioning, releases        | `~/.agents/skills/changelog-generator/SKILL.md`         |
-| Ideas, brainstorming,                  | `~/.agents/skills/brainstorming/SKILL.md`               |
-| REST, GraphQL, API design              | `~/.agents/skills/api-design-principles/SKILL.md`       |
-| UI, UX, design                         | `~/.agents/skills/interface-design/SKILL.md`            |
-| Tailwind classes, styling              | `~/.agents/skills/tailwind-design-system/SKILL.md`      |
-| TypeScript types, interfaces, generics | `~/.agents/skills/typescript-expert/SKILL.md`           |
-| Git commits, conventional commits      | `~/.agents/skills/git-commit/SKILL.md`                  |
-| Code review                            | `~/.agents/skills/perfect-code-review/SKILL.md`         |
-| Notes taking, notes generation         | `~/.agents/skills/second-brain-architect/SKILL.md`      |
-
-Read skills BEFORE writing code. Apply ALL patterns. Multiple skills can apply simultaneously.
-
 ---
 
 ## Engram Persistent Memory — Protocol
