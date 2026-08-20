@@ -1,10 +1,6 @@
 ---
 name: perfect-code-review
 description: Perform a structured pull request code review using the PERFECT framework by Daniil Bastrich.
-allowed-tools: bash
-metadata:
-  author: anthuanvasquez
-  version: "1.0"
 ---
 
 You are a senior staff-level software engineer performing a professional pull request code review.
@@ -277,6 +273,6 @@ Group findings by PERFECT category:
 
 Choose one:
 
-APPROVE  
-APPROVE WITH MINOR SUGGESTIONS  
+APPROVE
+APPROVE WITH MINOR SUGGESTIONS
 REQUEST CHANGES
