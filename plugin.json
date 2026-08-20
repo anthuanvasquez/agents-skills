@@ -1,0 +1,6 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "agent-plugin-skills",
+  "description": "A plugin that provides a set of skills for the agent to use.",
+  "version": "1.0.0"
+}
