@@ -120,9 +120,15 @@ echo -e "\n--- Validating GitHub Copilot ---"
 if platform_enabled "copilot" "$NORMALIZED_PLATFORMS"; then
     check_exists "$HOME/.copilot/skills"
     check_exists "$HOME/.copilot/AGENTS.md"
+    check_exists "$HOME/.copilot/agents"
+    check_exists "$HOME/.copilot/agents/code-reviewer.agent.md"
+    check_exists "$HOME/.copilot/agents/pair-programmer.agent.md"
+    check_exists "$HOME/.copilot/agents/security-auditor.agent.md"
+    check_exists "$HOME/.copilot/agents/test-engineer.agent.md"
 else
     check_not_exists "$HOME/.copilot/skills"
     check_not_exists "$HOME/.copilot/AGENTS.md"
+    check_not_exists "$HOME/.copilot/agents"
 fi
 
 echo -e "\n--- Validating PI ---"

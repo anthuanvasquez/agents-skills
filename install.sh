@@ -110,6 +110,7 @@ load_core() {
 
   # shellcheck source=/dev/null
   . "$source_dir/src/features/scripts/install-core.sh"
+  REPO_SOURCE_DIR="$source_dir"
   SKILLS_SOURCE_DIR="$source_dir/src/features"
 }
 
@@ -132,7 +133,7 @@ main() {
     PLATFORMS="none"
   fi
 
-  skills_install_from_source "$SKILLS_SOURCE_DIR" "$PLATFORMS" "$GLOBAL_SKILLS_DIR"
+  skills_install_from_source "$SKILLS_SOURCE_DIR" "$PLATFORMS" "$GLOBAL_SKILLS_DIR" "$REPO_SOURCE_DIR"
   echo ""
   echo "✅ Installation complete"
 }

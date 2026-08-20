@@ -87,6 +87,17 @@ skills_copy_agents_if_present() {
   fi
 }
 
+skills_install_copilot_agents() {
+  local source_dir="$1"
+  local target_dir="$HOME/.copilot/agents"
+
+  if [ -d "$source_dir/agents" ]; then
+    mkdir -p "$target_dir"
+    find "$source_dir/agents" -maxdepth 1 -type f -name "*.agent.md" -exec cp {} "$target_dir/" \;
+    echo "Installed custom agents to $target_dir"
+  fi
+}
+
 skills_install_global_payload() {
   local source_dir="$1"
   local global_dir="$2"
@@ -112,9 +123,11 @@ skills_configure_gemini() {
 skills_configure_copilot() {
   local source_dir="$1"
   local global_dir="$2"
+  local repo_root="${3:-$source_dir}"
   mkdir -p "$HOME/.copilot"
   skills_link_to_global "$global_dir" "$HOME/.copilot/skills"
   skills_copy_agents_if_present "$source_dir" "$HOME/.copilot/AGENTS.md"
+  skills_install_copilot_agents "$repo_root"
 }
 
 skills_configure_pi() {
@@ -181,6 +194,7 @@ skills_install_from_source() {
   local source_dir="$1"
   local platforms_raw="${2:-none}"
   local global_dir="${3:-$HOME/.agents/skills}"
+  local repo_root="${4:-$source_dir}"
 
   local normalized
   normalized="$(skills_normalize_platforms "$platforms_raw")"
@@ -200,7 +214,7 @@ skills_install_from_source() {
   case ",$normalized," in
     *,copilot,*)
       echo "Configuring GitHub Copilot"
-      skills_configure_copilot "$source_dir" "$global_dir"
+      skills_configure_copilot "$source_dir" "$global_dir" "$repo_root"
       ;;
   esac
 
