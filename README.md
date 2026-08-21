@@ -1,6 +1,6 @@
 # Skills
 
-Repository to hold standardized guidance, agent rules, and scaffold templates for applying AI agents (Google Gemini, GitHub Copilot, and PI) safely and productively in engineering workflows.
+An [Agent Plugin](https://code.visualstudio.com/docs/agent-customization/agent-plugins) that bundles portable **skills**, **custom agents**, **slash commands**, and **MCP servers** for GitHub Copilot, while also wiring the same skills into Google Gemini CLI and PI.
 
 ## Quick Start
 
@@ -25,17 +25,25 @@ Supported platform values (for both `--platforms` and the interactive prompt):
 - `all`
 - Comma-separated combinations like `gemini,copilot`
 
-Default behavior installs `skills/` into `~/.agents/skills` and only wires selected platforms.
+Default behavior installs `skills/` into `~/.agents/skills`. Selecting `copilot` installs the repository as a Copilot Agent Plugin under `~/.copilot/installed-plugins/_direct/github--anthuanvasquez--skills/`.
+
+## Copilot Agent Plugin
+
+This repository is also a valid Agent Plugins 1.0 package. You can install it directly in VS Code:
+
+1. Open the Command Palette and run **Chat: Install Plugin From Source**.
+2. Enter `https://github.com/anthuanvasquez/skills`.
+
+Once installed, Copilot discovers:
+
+- **Skills** from [`skills/`](skills/)
+- **Custom agents** from [`com.github.copilot/agents/`](com.github.copilot/agents/)
+- **Slash commands** (prompt files) from [`com.github.copilot/commands/`](com.github.copilot/commands/)
+- **MCP servers** from [`mcp.json`](mcp.json)
 
 ## Dev Container Feature
 
-This repository ships a Dev Container Feature consumable from GHCR.
-
-The feature is designed to keep this repository as the source of truth:
-
-- Uses packaged feature files when available.
-- Uses local repository source during local development.
-- Falls back to cloning this repository when needed.
+This repository ships a Dev Container Feature consumable from GHCR. The feature clones this repository as a Copilot Agent Plugin and wires the skills to Gemini and PI as requested.
 
 Feature option:
 
@@ -47,65 +55,27 @@ Example:
 {
 	"features": {
 		"ghcr.io/anthuanvasquez/skills/features:latest": {
-			"platforms": "none"
+			"platforms": "copilot"
 		}
 	}
 }
 ```
 
-An example consumer exists at `.devcontainer/devcontainer.json`.
+An example consumer exists at [`.devcontainer/devcontainer.json`](.devcontainer/devcontainer.json).
 
 ## Available Skills
 
-### Core Workflow & Automation
-Skills focused on the development lifecycle and git automation.
-
 | Skill | Description |
 | :--- | :--- |
-| **Brainstorming** | Socratic questioning protocol for complex requests and new features. |
-| **Branch PR** | Pull Request creation workflow following the issue-first system. |
-| **Changelog Generator** | Automated customer-facing release notes from commit history. |
-| **Git Commit** | Conventional commits with intelligent staging and message generation. |
-| **Issue Creation** | GitHub issue creation workflow (Bug Reports, Feature Requests). |
-| **Skill Registry** | Scans and generates project skill registry for orchestrator access. |
-| **Second Brain Architect** | Expert guidance for notes taking and knowledge generation. |
-
-### Engineering Standards
-Deep technical expertise for building robust and scalable systems.
-
-| Skill | Description |
-| :--- | :--- |
-| **Systematic Debugging** | Professional root-cause analysis and debugging protocol. |
 | **API Design Principles** | REST and GraphQL best practices for maintainable APIs. |
+| **Brainstorming** | Socratic questioning protocol for complex requests and new features. |
+| **Changelog Generator** | Automated customer-facing release notes from commit history. |
 | **Error Handling Patterns** | Resilient error propagation and graceful degradation strategies. |
-| **TypeScript Expert** | Type-level programming, performance, and modern tooling mastery. |
-| **Perfect Code Review** | Structured pull request code review using the PERFECT framework. |
-
-### Design & Frontend
-Building premium user interfaces and high-performance applications.
-
-| Skill | Description |
-| :--- | :--- |
+| **Git Commit** | Conventional commits with intelligent staging and message generation. |
 | **Interface Design** | Expert guidance for dashboards, admin panels, and interactive tools. |
-| **Tailwind Design System** | Scalable UI patterns with Tailwind CSS v4 and design tokens. |
-| **React Best Practices** | Vercel-grade performance optimization for React and Next.js. |
-
-## Available Workflows
-Commands to streamline common development tasks.
-
-| Command | Description |
-| :--- | :--- |
-| **`/brainstorm`** | Structured Idea Exploration |
-| **`/commit`** | Create Atomic Commits |
-| **`/create`** | Create Application |
-| **`/debug`** | Systematic Problem Investigation |
-| **`/deploy`** | Production Deployment |
-| **`/enhance`** | Update Application |
-| **`/orchestrate`** | Multi-Agent Orchestration |
-| **`/plan`** | Project Planning Mode |
-| **`/preview`** | Preview Management |
-| **`/status`** | Show Status |
-| **`/test`** | Test Generation and Execution |
+| **Perfect Code Review** | Structured pull request code review using the PERFECT framework. |
+| **Systematic Debugging** | Professional root-cause analysis and debugging protocol. |
+| **Test-Driven Development** | Test-first development guidance and patterns. |
 
 
 ## Test
