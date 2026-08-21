@@ -78,23 +78,12 @@ skills_link_to_global() {
   ln -s "$global_dir" "$link_path"
 }
 
-skills_copy_agents_if_present() {
-  local source_dir="$1"
+skills_copy_file_if_present() {
+  local source_file="$1"
   local target_file="$2"
 
-  if [ -f "$source_dir/AGENTS.md" ]; then
-    cp "$source_dir/AGENTS.md" "$target_file"
-  fi
-}
-
-skills_install_copilot_agents() {
-  local source_dir="$1"
-  local target_dir="$HOME/.copilot/agents"
-
-  if [ -d "$source_dir/agents" ]; then
-    mkdir -p "$target_dir"
-    find "$source_dir/agents" -maxdepth 1 -type f -name "*.agent.md" -exec cp {} "$target_dir/" \;
-    echo "Installed custom agents to $target_dir"
+  if [ -f "$source_file" ]; then
+    cp "$source_file" "$target_file"
   fi
 }
 
@@ -117,17 +106,37 @@ skills_configure_gemini() {
   local global_dir="$2"
   mkdir -p "$HOME/.gemini"
   skills_link_to_global "$global_dir" "$HOME/.gemini/skills"
-  skills_copy_agents_if_present "$source_dir" "$HOME/.gemini/AGENTS.md"
+  skills_copy_file_if_present "$source_dir/AGENTS.md" "$HOME/.gemini/AGENTS.md"
+}
+
+skills_install_copilot_plugin() {
+  local source_dir="$1"
+  local plugin_dir="$HOME/.copilot/installed-plugins/_direct/github--anthuanvasquez--skills"
+  local repo_url="https://github.com/anthuanvasquez/skills.git"
+
+  mkdir -p "$(dirname "$plugin_dir")"
+  skills_path_reset "$plugin_dir"
+
+  if [ -f "$source_dir/plugin.json" ]; then
+    mkdir -p "$plugin_dir"
+    cd "$source_dir"
+    find . -type f -not -path "./.git/*" | while IFS= read -r file; do
+      local target
+      target="$plugin_dir/$file"
+      mkdir -p "$(dirname "$target")"
+      cp "$file" "$target"
+    done
+    cd - > /dev/null
+  else
+    git clone --depth 1 "$repo_url" "$plugin_dir"
+  fi
+
+  echo "Installed Copilot plugin to $plugin_dir"
 }
 
 skills_configure_copilot() {
   local source_dir="$1"
-  local global_dir="$2"
-  local repo_root="${3:-$source_dir}"
-  mkdir -p "$HOME/.copilot"
-  skills_link_to_global "$global_dir" "$HOME/.copilot/skills"
-  skills_copy_agents_if_present "$source_dir" "$HOME/.copilot/AGENTS.md"
-  skills_install_copilot_agents "$repo_root"
+  skills_install_copilot_plugin "$source_dir"
 }
 
 skills_configure_pi() {
@@ -135,7 +144,7 @@ skills_configure_pi() {
   local global_dir="$2"
   mkdir -p "$HOME/.pi/agent"
   skills_link_to_global "$global_dir" "$HOME/.pi/agent/skills"
-  skills_copy_agents_if_present "$source_dir" "$HOME/.pi/agent/AGENTS.md"
+  skills_copy_file_if_present "$source_dir/AGENTS.md" "$HOME/.pi/agent/AGENTS.md"
 }
 
 skills_cleanup_unselected_platforms() {
@@ -154,6 +163,7 @@ skills_cleanup_unselected_platforms() {
     *,copilot,*)
       ;;
     *)
+      skills_path_reset "$HOME/.copilot/installed-plugins/_direct/github--anthuanvasquez--skills"
       skills_path_reset "$HOME/.copilot/skills"
       skills_path_reset "$HOME/.copilot/AGENTS.md"
       ;;
@@ -173,6 +183,7 @@ skills_cleanup_unselected_platforms() {
   skills_path_reset "$HOME/.gemini/antigravity/AGENTS.md"
   skills_path_reset "$HOME/.config/opencode/skills"
   skills_path_reset "$HOME/.config/opencode/AGENTS.md"
+  skills_path_reset "$HOME/.copilot/agents"
 }
 
 skills_write_state() {
@@ -194,7 +205,6 @@ skills_install_from_source() {
   local source_dir="$1"
   local platforms_raw="${2:-none}"
   local global_dir="${3:-$HOME/.agents/skills}"
-  local repo_root="${4:-$source_dir}"
 
   local normalized
   normalized="$(skills_normalize_platforms "$platforms_raw")"
@@ -214,7 +224,7 @@ skills_install_from_source() {
   case ",$normalized," in
     *,copilot,*)
       echo "Configuring GitHub Copilot"
-      skills_configure_copilot "$source_dir" "$global_dir" "$repo_root"
+      skills_configure_copilot "$source_dir"
       ;;
   esac
 

@@ -100,7 +100,7 @@ load_core() {
 
   if [ -n "$SOURCE_DIR_OVERRIDE" ]; then
     source_dir="$SOURCE_DIR_OVERRIDE"
-  elif [ -d "src/features/skills" ] && [ -f "src/features/scripts/install-core.sh" ]; then
+  elif [ -d "skills" ] && [ -f "plugin.json" ] && [ -f "src/features/scripts/install-core.sh" ]; then
     source_dir="$(pwd)"
     echo "Using local source files."
   else
@@ -110,8 +110,7 @@ load_core() {
 
   # shellcheck source=/dev/null
   . "$source_dir/src/features/scripts/install-core.sh"
-  REPO_SOURCE_DIR="$source_dir"
-  SKILLS_SOURCE_DIR="$source_dir/src/features"
+  SKILLS_SOURCE_DIR="$source_dir"
 }
 
 cleanup() {
@@ -133,7 +132,7 @@ main() {
     PLATFORMS="none"
   fi
 
-  skills_install_from_source "$SKILLS_SOURCE_DIR" "$PLATFORMS" "$GLOBAL_SKILLS_DIR" "$REPO_SOURCE_DIR"
+  skills_install_from_source "$SKILLS_SOURCE_DIR" "$PLATFORMS" "$GLOBAL_SKILLS_DIR"
   echo ""
   echo "✅ Installation complete"
 }

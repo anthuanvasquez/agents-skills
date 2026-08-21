@@ -18,14 +18,8 @@ resolve_source_dir() {
   local script_dir
   script_dir="$(cd "$(dirname "$0")" && pwd)"
 
-  # Preferred: packaged feature payload and core when distributed via GHCR.
-  if [ -d "$script_dir/skills" ] && [ -f "$script_dir/scripts/install-core.sh" ]; then
-    echo "$script_dir"
-    return
-  fi
-
-  # Local development from this repository checkout.
-  if [ -d "$script_dir/../../skills" ] && [ -f "$script_dir/../../scripts/install-core.sh" ]; then
+  # Local repository checkout: this script is at src/features/install.sh.
+  if [ -f "$script_dir/../../plugin.json" ] && [ -f "$script_dir/scripts/install-core.sh" ]; then
     echo "$script_dir/../.."
     return
   fi
@@ -42,7 +36,7 @@ main() {
   source_dir="$(resolve_source_dir)"
 
   # shellcheck source=/dev/null
-  . "$source_dir/scripts/install-core.sh"
+  . "$source_dir/src/features/scripts/install-core.sh"
 
   skills_install_from_source "$source_dir" "$PLATFORMS" "$GLOBAL_SKILLS_DIR"
 }
