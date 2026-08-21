@@ -1,14 +1,12 @@
 {
-  "servers": {
-    "engram": {
-      "command": "engram",
-      "args": ["mcp"]
-    },
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json",
+  "mcpServers": {
     "github": {
-      "type": "http",
+      "type": "streamable-http",
       "url": "https://api.githubcopilot.com/mcp"
     },
     "playwright": {
+      "type": "stdio",
       "command": "npx",
       "args": ["-y", "@microsoft/mcp-server-playwright"]
     }

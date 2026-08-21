@@ -1,6 +1,23 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
-  "name": "agent-plugin-skills",
-  "description": "A plugin that provides a set of skills for the agent to use.",
-  "version": "1.0.0"
+  "name": "skills",
+  "description": "Agent skills, custom agents, slash commands, and MCP servers for productive AI-assisted engineering workflows.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Anthuan Vasquez"
+  },
+  "homepage": "https://github.com/anthuanvasquez/skills",
+  "repository": "https://github.com/anthuanvasquez/skills.git",
+  "license": "MIT",
+  "keywords": [
+    "copilot",
+    "agent-skills",
+    "custom-agents",
+    "slash-commands",
+    "mcp",
+    "prompts"
+  ],
+  "extensions": {
+    "com.github.copilot": {}
+  }
 }
