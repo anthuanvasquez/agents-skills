@@ -106,6 +106,7 @@ NORMALIZED_PLATFORMS="$(normalize_platforms "$PLATFORMS")"
 
 echo "Validating global install"
 check_exists "$HOME/.agents/skills"
+check_exists "$HOME/.agents/.skills-install-state"
 
 echo -e "\n--- Validating Google Gemini CLI ---"
 if platform_enabled "gemini" "$NORMALIZED_PLATFORMS"; then
@@ -116,19 +117,22 @@ else
     check_not_exists "$HOME/.gemini/AGENTS.md"
 fi
 
+COPILOT_PLUGIN_DIR="$HOME/.copilot/installed-plugins/_direct/github--anthuanvasquez--skills"
+
 echo -e "\n--- Validating GitHub Copilot ---"
 if platform_enabled "copilot" "$NORMALIZED_PLATFORMS"; then
-    check_exists "$HOME/.copilot/skills"
-    check_exists "$HOME/.copilot/AGENTS.md"
-    check_exists "$HOME/.copilot/agents"
-    check_exists "$HOME/.copilot/agents/code-reviewer.agent.md"
-    check_exists "$HOME/.copilot/agents/pair-programmer.agent.md"
-    check_exists "$HOME/.copilot/agents/security-auditor.agent.md"
-    check_exists "$HOME/.copilot/agents/test-engineer.agent.md"
+    check_exists "$COPILOT_PLUGIN_DIR/plugin.json"
+    check_exists "$COPILOT_PLUGIN_DIR/skills"
+    check_exists "$COPILOT_PLUGIN_DIR/mcp.json"
+    check_exists "$COPILOT_PLUGIN_DIR/com.github.copilot/agents"
+    check_exists "$COPILOT_PLUGIN_DIR/com.github.copilot/agents/code-reviewer.agent.md"
+    check_exists "$COPILOT_PLUGIN_DIR/com.github.copilot/agents/security-auditor.agent.md"
+    check_exists "$COPILOT_PLUGIN_DIR/com.github.copilot/agents/test-engineer.agent.md"
+    check_exists "$COPILOT_PLUGIN_DIR/com.github.copilot/agents/thinking-partner.agent.md"
+    check_exists "$COPILOT_PLUGIN_DIR/com.github.copilot/commands"
+    check_exists "$COPILOT_PLUGIN_DIR/com.github.copilot/commands/commit.prompt.md"
 else
-    check_not_exists "$HOME/.copilot/skills"
-    check_not_exists "$HOME/.copilot/AGENTS.md"
-    check_not_exists "$HOME/.copilot/agents"
+    check_not_exists "$COPILOT_PLUGIN_DIR"
 fi
 
 echo -e "\n--- Validating PI ---"

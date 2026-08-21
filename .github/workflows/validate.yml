@@ -37,7 +37,62 @@ jobs:
           print(f"Feature '{data['id']}' v{data['version']} is valid.")
           PY
 
+      - name: "Validate plugin.json"
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          import re
+          from pathlib import Path
+
+          manifest_path = Path("plugin.json")
+          data = json.loads(manifest_path.read_text())
+
+          if data.get("$schema") != "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json":
+              raise SystemExit("Missing or invalid $schema")
+
+          name = data.get("name", "")
+          if not re.fullmatch(r"[a-z0-9]([a-z0-9.-]*[a-z0-9])?", name) or "--" in name or ".." in name:
+              raise SystemExit(f"Invalid plugin name: {name}")
+
+          required = {"name", "$schema"}
+          missing = required - data.keys()
+          if missing:
+              raise SystemExit(f"Missing required keys: {missing}")
+
+          print(f"Plugin '{name}' is valid.")
+          PY
+
+      - name: "Validate mcp.json"
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          manifest_path = Path("mcp.json")
+          data = json.loads(manifest_path.read_text())
+
+          if data.get("$schema") != "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json":
+              raise SystemExit("Missing or invalid $schema")
+
+          if "mcpServers" not in data or not isinstance(data["mcpServers"], dict):
+              raise SystemExit("Missing or invalid mcpServers")
+
+          print(f"MCP configuration with {len(data['mcpServers'])} server(s) is valid.")
+          PY
+
       - name: "Shellcheck install scripts"
         run: |
           set -euo pipefail
           shellcheck src/features/install.sh src/features/scripts/install-core.sh
+
+      - name: "Test install in container"
+        run: |
+          set -euo pipefail
+          docker build -t test-skills-installer .
+          docker run --rm -v "$PWD:/home/testuser/skills" test-skills-installer bash -c '
+            cd /home/testuser/skills
+            ./install.sh --platforms all --non-interactive
+            ./install-test.sh
+          '
