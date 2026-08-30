@@ -85,7 +85,7 @@ jobs:
       - name: "Shellcheck install scripts"
         run: |
           set -euo pipefail
-          shellcheck src/features/install.sh src/features/scripts/install-core.sh
+          shellcheck src/features/install.sh src/features/scripts/core.sh
 
       - name: "Test install in container"
         run: |

@@ -12,7 +12,7 @@ skills_normalize_platforms() {
   fi
 
   if [ "$raw" = "all" ]; then
-    printf '%s' "gemini,copilot,pi"
+    printf '%s' "gemini,copilot"
     return
   fi
 
@@ -26,7 +26,7 @@ skills_normalize_platforms() {
   IFS=',' read -r -a tokens <<< "$raw"
   for token in "${tokens[@]}"; do
     case "$token" in
-      gemini|copilot|pi)
+      gemini|copilot)
         validated+=("$token")
         ;;
       none)
@@ -139,14 +139,6 @@ skills_configure_copilot() {
   skills_install_copilot_plugin "$source_dir"
 }
 
-skills_configure_pi() {
-  local source_dir="$1"
-  local global_dir="$2"
-  mkdir -p "$HOME/.pi/agent"
-  skills_link_to_global "$global_dir" "$HOME/.pi/agent/skills"
-  skills_copy_file_if_present "$source_dir/AGENTS.md" "$HOME/.pi/agent/AGENTS.md"
-}
-
 skills_cleanup_unselected_platforms() {
   local normalized="$1"
 
@@ -166,15 +158,6 @@ skills_cleanup_unselected_platforms() {
       skills_path_reset "$HOME/.copilot/installed-plugins/_direct/github--anthuanvasquez--skills"
       skills_path_reset "$HOME/.copilot/skills"
       skills_path_reset "$HOME/.copilot/AGENTS.md"
-      ;;
-  esac
-
-  case ",$normalized," in
-    *,pi,*)
-      ;;
-    *)
-      skills_path_reset "$HOME/.pi/agent/skills"
-      skills_path_reset "$HOME/.pi/agent/AGENTS.md"
       ;;
   esac
 
@@ -225,13 +208,6 @@ skills_install_from_source() {
     *,copilot,*)
       echo "Configuring GitHub Copilot"
       skills_configure_copilot "$source_dir"
-      ;;
-  esac
-
-  case ",$normalized," in
-    *,pi,*)
-      echo "Configuring PI"
-      skills_configure_pi "$source_dir" "$global_dir"
       ;;
   esac
 

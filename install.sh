@@ -10,7 +10,7 @@ NON_INTERACTIVE=0
 SOURCE_DIR_OVERRIDE=""
 
 usage() {
-  echo "Usage: $0 [--platforms <none|gemini|copilot|pi|all|csv>] [--non-interactive] [--source-dir <path>]"
+  echo "Usage: $0 [--platforms <none|gemini|copilot|all|csv>] [--non-interactive] [--source-dir <path>]"
   echo ""
   echo "Examples:"
   echo "  $0"
@@ -60,7 +60,6 @@ interactive_platform_prompt() {
   echo "- none"
   echo "- gemini"
   echo "- copilot"
-  echo "- pi"
   echo "- all"
   echo "You can also combine values, for example: gemini,copilot"
   read -r -p "Select platforms: " OPTIONS
@@ -81,8 +80,7 @@ interactive_platform_prompt() {
       0) token="none" ;;
       1) token="gemini" ;;
       2) token="copilot" ;;
-      3) token="pi" ;;
-      4) token="all" ;;
+      3) token="all" ;;
     esac
 
     if [ -z "$mapped" ]; then
@@ -100,7 +98,7 @@ load_core() {
 
   if [ -n "$SOURCE_DIR_OVERRIDE" ]; then
     source_dir="$SOURCE_DIR_OVERRIDE"
-  elif [ -d "skills" ] && [ -f "plugin.json" ] && [ -f "src/features/scripts/install-core.sh" ]; then
+  elif [ -d "skills" ] && [ -f "plugin.json" ] && [ -f "src/features/scripts/core.sh" ]; then
     source_dir="$(pwd)"
     echo "Using local source files."
   else
@@ -109,7 +107,7 @@ load_core() {
   fi
 
   # shellcheck source=/dev/null
-  . "$source_dir/src/features/scripts/install-core.sh"
+  . "$source_dir/src/features/scripts/core.sh"
   SKILLS_SOURCE_DIR="$source_dir"
 }
 
