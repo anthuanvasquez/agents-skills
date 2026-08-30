@@ -11,12 +11,11 @@
     "platforms": {
       "type": "string",
       "default": "none",
-      "description": "Platforms to configure: none, gemini, copilot, pi, all, or comma-separated list.",
+      "description": "Platforms to configure: none, gemini, copilot, all, or comma-separated list.",
       "proposals": [
         "none",
         "gemini",
         "copilot",
-        "pi",
         "all",
         "gemini,copilot"
       ]

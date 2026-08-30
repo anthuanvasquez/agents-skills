@@ -40,7 +40,7 @@ normalize_platforms() {
     raw="${raw// /}"
 
     if [ "$raw" = "all" ]; then
-        echo "gemini,copilot,pi"
+        echo "gemini,copilot"
         return
     fi
 
@@ -129,19 +129,10 @@ if platform_enabled "copilot" "$NORMALIZED_PLATFORMS"; then
     check_exists "$COPILOT_PLUGIN_DIR/com.github.copilot/agents/security-auditor.agent.md"
     check_exists "$COPILOT_PLUGIN_DIR/com.github.copilot/agents/test-engineer.agent.md"
     check_exists "$COPILOT_PLUGIN_DIR/com.github.copilot/agents/thinking-partner.agent.md"
-    check_exists "$COPILOT_PLUGIN_DIR/com.github.copilot/commands"
-    check_exists "$COPILOT_PLUGIN_DIR/com.github.copilot/commands/commit.prompt.md"
+    check_exists "$COPILOT_PLUGIN_DIR/com.github.copilot/prompts"
+    check_exists "$COPILOT_PLUGIN_DIR/com.github.copilot/prompts/commit.prompt.md"
 else
     check_not_exists "$COPILOT_PLUGIN_DIR"
-fi
-
-echo -e "\n--- Validating PI ---"
-if platform_enabled "pi" "$NORMALIZED_PLATFORMS"; then
-    check_exists "$HOME/.pi/agent/skills"
-    check_exists "$HOME/.pi/agent/AGENTS.md"
-else
-    check_not_exists "$HOME/.pi/agent/skills"
-    check_not_exists "$HOME/.pi/agent/AGENTS.md"
 fi
 
 if [ $ERRORS -eq 0 ]; then
