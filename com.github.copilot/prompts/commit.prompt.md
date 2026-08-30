@@ -1,4 +1,5 @@
 ---
+name: createvamos-commits
 description: Creates atomic commits following Conventional Commits best practices
 ---
 
