@@ -7,13 +7,13 @@ An [Agent Plugin](https://code.visualstudio.com/docs/agent-customization/agent-p
 Install globally with platform wiring prompts:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/anthuanvasquez/skills/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/anthuanvasquez/agents-skills/main/install.sh | bash
 ```
 
 Install non-interactive:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/anthuanvasquez/skills/main/install.sh | bash -s -- --platforms gemini,copilot --non-interactive
+curl -fsSL https://raw.githubusercontent.com/anthuanvasquez/agents-skills/main/install.sh | bash -s -- --platforms gemini,copilot --non-interactive
 ```
 
 Supported platform values (for both `--platforms` and the interactive prompt):
@@ -32,7 +32,7 @@ Default behavior installs `skills/` into `~/.agents/skills`. Selecting `copilot`
 This repository is also a valid Agent Plugins 1.0 package. You can install it directly in VS Code:
 
 1. Open the Command Palette and run **Chat: Install Plugin From Source**.
-2. Enter `https://github.com/anthuanvasquez/skills`.
+2. Enter `https://github.com/anthuanvasquez/agents-skills`.
 
 Once installed, Copilot discovers:
 
@@ -54,7 +54,7 @@ Example:
 ```json
 {
 	"features": {
-		"ghcr.io/anthuanvasquez/skills/features:latest": {
+		"ghcr.io/anthuanvasquez/agents-skills/features:latest": {
 			"platforms": "copilot"
 		}
 	}
@@ -72,6 +72,7 @@ An example consumer exists at [`.devcontainer/devcontainer.json`](.devcontainer/
 | **Changelog Generator** | Automated customer-facing release notes from commit history. |
 | **Error Handling Patterns** | Resilient error propagation and graceful degradation strategies. |
 | **Git Commit** | Conventional commits with intelligent staging and message generation. |
+| **Improve Codebase Architecture** | Scan a codebase for deepening opportunities and produce a visual HTML report. |
 | **Interface Design** | Expert guidance for dashboards, admin panels, and interactive tools. |
 | **Perfect Code Review** | Structured pull request code review using the PERFECT framework. |
 | **Systematic Debugging** | Professional root-cause analysis and debugging protocol. |
@@ -81,16 +82,16 @@ An example consumer exists at [`.devcontainer/devcontainer.json`](.devcontainer/
 ## Test
 
 ```zsh
-docker build -t test-skills-installer .
-docker run -it -v $(pwd):/home/testuser/skills test-skills-installer bash
+docker build -t skills-test .
+docker run -it -v $(pwd):/home/test/skills skills-test bash
 
 # inside container
-cd /home/testuser/skills
-./install.sh --platforms gemini --non-interactive
-./install-test.sh
+cd /home/test/skills
+./install.sh --platforms copilot --non-interactive
+./test.sh
 
 # or explicit
-./install-test.sh --platforms gemini
+./test.sh --platforms copilot
 ```
 
 ## License
