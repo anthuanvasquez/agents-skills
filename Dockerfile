@@ -1,11 +1,11 @@
 FROM alpine:latest
 
 RUN apk add --no-cache bash git curl
-RUN adduser -D testuser
+RUN adduser -D test
 
-USER testuser
+USER test
 
-WORKDIR /home/testuser
+WORKDIR /home/test
 
 ENV SHELL=/bin/bash
 

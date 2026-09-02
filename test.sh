@@ -108,16 +108,19 @@ echo "Validating global install"
 check_exists "$HOME/.agents/skills"
 check_exists "$HOME/.agents/.skills-install-state"
 
-echo -e "\n--- Validating Google Gemini CLI ---"
-if platform_enabled "gemini" "$NORMALIZED_PLATFORMS"; then
-    check_exists "$HOME/.gemini/skills"
-    check_exists "$HOME/.gemini/AGENTS.md"
-else
-    check_not_exists "$HOME/.gemini/skills"
-    check_not_exists "$HOME/.gemini/AGENTS.md"
-fi
-
-COPILOT_PLUGIN_DIR="$HOME/.copilot/installed-plugins/_direct/github--anthuanvasquez--skills"
+COPILOT_PLUGIN_DIR="$HOME/.copilot/plugins/agents-skills"
+SKILL_NAMES=(
+    api-design-principles
+    brainstorming
+    changelog-generator
+    error-handling-patterns
+    git-commit
+    improve-codebase-architecture
+    interface-design
+    perfect-code-review
+    systematic-debugging
+    tdd
+)
 
 echo -e "\n--- Validating GitHub Copilot ---"
 if platform_enabled "copilot" "$NORMALIZED_PLATFORMS"; then
@@ -129,8 +132,13 @@ if platform_enabled "copilot" "$NORMALIZED_PLATFORMS"; then
     check_exists "$COPILOT_PLUGIN_DIR/com.github.copilot/agents/security-auditor.agent.md"
     check_exists "$COPILOT_PLUGIN_DIR/com.github.copilot/agents/test-engineer.agent.md"
     check_exists "$COPILOT_PLUGIN_DIR/com.github.copilot/agents/thinking-partner.agent.md"
-    check_exists "$COPILOT_PLUGIN_DIR/com.github.copilot/prompts"
-    check_exists "$COPILOT_PLUGIN_DIR/com.github.copilot/prompts/commit.prompt.md"
+    check_exists "$COPILOT_PLUGIN_DIR/com.github.copilot/commands"
+    check_exists "$COPILOT_PLUGIN_DIR/com.github.copilot/commands/commit.prompt.md"
+
+    echo "Validating Copilot plugin skill payloads"
+    for skill in "${SKILL_NAMES[@]}"; do
+        check_exists "$COPILOT_PLUGIN_DIR/skills/$skill/SKILL.md"
+    done
 else
     check_not_exists "$COPILOT_PLUGIN_DIR"
 fi

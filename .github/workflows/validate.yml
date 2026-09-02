@@ -90,9 +90,9 @@ jobs:
       - name: "Test install in container"
         run: |
           set -euo pipefail
-          docker build -t test-skills-installer .
-          docker run --rm -v "$PWD:/home/testuser/skills" test-skills-installer bash -c '
-            cd /home/testuser/skills
+          docker build -t skills-test .
+          docker run --rm -v "$PWD:/home/test/skills" skills-test bash -c '
+            cd /home/test/skills
             ./install.sh --platforms all --non-interactive
-            ./install-test.sh
+            ./test.sh
           '
