@@ -14,7 +14,7 @@ usage() {
   echo ""
   echo "Examples:"
   echo "  $0"
-  echo "  $0 --platforms all --non-interactive"
+  echo "  $0 --platforms copilot --non-interactive"
   echo "  PLATFORMS=copilot $0 --non-interactive"
 }
 

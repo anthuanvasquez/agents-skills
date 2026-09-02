@@ -4,7 +4,8 @@ set -euo pipefail
 
 REPO_URL="https://github.com/anthuanvasquez/agents-skills.git"
 TEMP_DIR="/tmp/skills-feature-$(date +%s)"
-PLATFORMS="${PLATFORMS:-none}"
+# Dev Container Features expose options as environment variables named after the option.
+PLATFORMS="${platforms:-${PLATFORMS:-none}}"
 GLOBAL_SKILLS_DIR="$HOME/.agents/skills"
 CLONED_SOURCE=0
 

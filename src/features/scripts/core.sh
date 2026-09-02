@@ -101,30 +101,41 @@ skills_install_global_payload() {
   cp -r "$source_dir/skills" "$global_dir"
 }
 
-skills_install_copilot_plugin() {
+skills_install_copilot_components() {
   local source_dir="$1"
-  local plugin_dir="$HOME/.copilot/plugins/agents-skills"
-  local repo_url="https://github.com/anthuanvasquez/agents-skills.git"
+  local copilot_dir="$source_dir/com.github.copilot"
 
-  mkdir -p "$(dirname "$plugin_dir")"
-  skills_path_reset "$plugin_dir"
-
-  if [ -f "$source_dir/plugin.json" ]; then
-    mkdir -p "$plugin_dir"
-    cp "$source_dir/plugin.json" "$plugin_dir/plugin.json"
-    cp "$source_dir/mcp.json" "$plugin_dir/mcp.json"
-    cp -r "$source_dir/skills" "$plugin_dir/skills"
-    cp -r "$source_dir/com.github.copilot" "$plugin_dir/com.github.copilot"
-  else
-    git clone --depth 1 "$repo_url" "$plugin_dir"
+  if [ ! -d "$copilot_dir" ]; then
+    echo "Missing Copilot payload in source dir: $source_dir"
+    exit 1
   fi
 
-  echo "Installed Copilot plugin to $plugin_dir"
+  # Reset managed directories so the install remains idempotent, then recreate them.
+  skills_path_reset "$HOME/.copilot/agents"
+  skills_path_reset "$HOME/.copilot/prompts"
+  skills_path_reset "$HOME/.copilot/instructions"
+  mkdir -p "$HOME/.copilot/agents"
+  mkdir -p "$HOME/.copilot/prompts"
+  mkdir -p "$HOME/.copilot/instructions"
+
+  if [ -d "$copilot_dir/agents" ]; then
+    cp -r "$copilot_dir/agents/"* "$HOME/.copilot/agents/"
+  fi
+
+  if [ -d "$copilot_dir/commands" ]; then
+    cp -r "$copilot_dir/commands/"* "$HOME/.copilot/prompts/"
+  fi
+
+  if [ -d "$copilot_dir/instructions" ]; then
+    cp -r "$copilot_dir/instructions/"* "$HOME/.copilot/instructions/"
+  fi
+
+  echo "Installed Copilot components to ~/.copilot/{agents,prompts,instructions}"
 }
 
 skills_configure_copilot() {
   local source_dir="$1"
-  skills_install_copilot_plugin "$source_dir"
+  skills_install_copilot_components "$source_dir"
 }
 
 skills_cleanup_unselected_platforms() {
@@ -134,13 +145,16 @@ skills_cleanup_unselected_platforms() {
     *,copilot,*)
       ;;
     *)
-      skills_path_reset "$HOME/.copilot/skills"
-      skills_path_reset "$HOME/.copilot/AGENTS.md"
+      skills_path_reset "$HOME/.copilot/agents"
+      skills_path_reset "$HOME/.copilot/prompts"
+      skills_path_reset "$HOME/.copilot/instructions"
       ;;
   esac
 
-  # Cleanup legacy platform folders from previous installer versions.
-  skills_path_reset "$HOME/.copilot/agents"
+  # Cleanup legacy locations from previous installer versions.
+  skills_path_reset "$HOME/.copilot/plugins/agents-skills"
+  skills_path_reset "$HOME/.copilot/skills"
+  skills_path_reset "$HOME/.copilot/AGENTS.md"
 }
 
 skills_write_state() {
