@@ -6,8 +6,8 @@
   "author": {
     "name": "Anthuan Vasquez"
   },
-  "homepage": "https://github.com/anthuanvasquez/skills",
-  "repository": "https://github.com/anthuanvasquez/skills.git",
+  "homepage": "https://github.com/anthuanvasquez/agents-skills",
+  "repository": "https://github.com/anthuanvasquez/agents-skills.git",
   "license": "MIT",
   "keywords": [
     "copilot",
@@ -16,8 +16,5 @@
     "slash-commands",
     "mcp",
     "prompts"
-  ],
-  "extensions": {
-    "com.github.copilot": {}
-  }
+  ]
 }
