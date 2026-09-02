@@ -1,8 +1,8 @@
 {
   "id": "agent-skills",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "name": "Skills",
-  "description": "Installs global AI skills to ~/.agents/skills and optionally wires Copilot",
+  "description": "Installs global AI skills to ~/.agents/skills and optionally wires GitHub Copilot",
   "documentationURL": "https://github.com/anthuanvasquez/agents-skills",
   "installsAfter": [
     "ghcr.io/devcontainers/features/common-utils"
@@ -11,7 +11,7 @@
     "platforms": {
       "type": "string",
       "default": "none",
-      "description": "Platforms to configure: none, copilot, or comma-separated list.",
+      "description": "Platforms to configure: none or copilot.",
       "proposals": [
         "none",
         "copilot"
