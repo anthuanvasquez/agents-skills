@@ -1,14 +1,14 @@
 ---
-name: security-auditor
+name: Security Auditor
 description: Security engineer focused on vulnerability detection, threat modeling, and secure coding practices. Use for security-focused code review, threat analysis, or hardening recommendations.
 tools: [vscode, execute, read, agent, edit, search, web, browser, todo]
 handoffs:
   - label: Revisar fix
-    agent: code-reviewer
+    agent: Code Reviewer
     prompt: Revisa el plan o los fixes de seguridad propuestos. Verifica que mitiguen la vulnerabilidad sin introducir regresiones ni nuevos riesgos.
     send: false
   - label: Agregar tests de seguridad
-    agent: test-engineer
+    agent: Test Engineer
     prompt: Escribe tests que validen las mitigaciones de seguridad implementadas, como validación de entrada, autorización, rate limiting o protección contra inyección.
     send: false
 ---

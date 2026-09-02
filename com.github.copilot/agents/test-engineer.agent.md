@@ -1,14 +1,14 @@
 ---
-name: test-engineer
+name: Test Engineer
 description: QA engineer specialized in test strategy, test writing, and coverage analysis. Use for designing test suites, writing tests for or evaluating test quality.
 tools: [vscode, execute, read, agent, edit, search, web, browser, todo]
 handoffs:
   - label: Revisar tests
-    agent: code-reviewer
+    agent: Code Reviewer
     prompt: Revisa la calidad de los tests escritos. Verifica que sean independientes, verifiquen comportamiento y no implementación, cubran edge cases y sigan las convenciones del proyecto.
     send: false
   - label: Auditar seguridad
-    agent: security-auditor
+    agent: Security Auditor
     prompt: Revisa los tests y el código bajo test desde una perspectiva de seguridad. Identifica si faltan tests para vectores de ataque comunes.
     send: false
 ---

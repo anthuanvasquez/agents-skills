@@ -1,14 +1,14 @@
 ---
-name: code-reviewer
+name: Code Reviewer
 description: Senior code reviewer that evaluates changes across five dimensions — correctness, readability, architecture, security, and performance. Use for thorough code review before merge.
 tools: [vscode, execute, read, agent, edit, search, web, browser, todo]
 handoffs:
   - label: Escalar a seguridad
-    agent: security-auditor
+    agent: Security Auditor
     prompt: Realiza una revisión de seguridad en profundidad sobre los cambios revisados. Enfócate en vectores de ataque prácticos, validación de entrada, autenticación/autorización, manejo de secretos y cualquier dependencia nueva.
     send: false
   - label: Solicitar tests
-    agent: test-engineer
+    agent: Test Engineer
     prompt: Diseña y escribe tests para el código revisado. Cubre el happy path, edge cases, errores y cualquier comportamiento crítico identificado en la revisión.
     send: false
 ---
