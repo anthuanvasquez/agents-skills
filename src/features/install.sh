@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-REPO_URL="https://github.com/anthuanvasquez/skills.git"
+REPO_URL="https://github.com/anthuanvasquez/agents-skills.git"
 TEMP_DIR="/tmp/skills-feature-$(date +%s)"
 PLATFORMS="${PLATFORMS:-none}"
 GLOBAL_SKILLS_DIR="$HOME/.agents/skills"

@@ -1,9 +1,9 @@
 {
-  "id": "features",
+  "id": "agent-skills",
   "version": "0.2.0",
   "name": "Skills",
-  "description": "Installs global AI skills to ~/.agents/skills and optionally wires Gemini, Copilot, and PI.",
-  "documentationURL": "https://github.com/anthuanvasquez/skills",
+  "description": "Installs global AI skills to ~/.agents/skills and optionally wires Copilot",
+  "documentationURL": "https://github.com/anthuanvasquez/agents-skills",
   "installsAfter": [
     "ghcr.io/devcontainers/features/common-utils"
   ],
@@ -11,13 +11,10 @@
     "platforms": {
       "type": "string",
       "default": "none",
-      "description": "Platforms to configure: none, gemini, copilot, all, or comma-separated list.",
+      "description": "Platforms to configure: none, copilot, or comma-separated list.",
       "proposals": [
         "none",
-        "gemini",
-        "copilot",
-        "all",
-        "gemini,copilot"
+        "copilot"
       ]
     }
   }

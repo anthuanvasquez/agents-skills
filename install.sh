@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-REPO_URL="https://github.com/anthuanvasquez/skills.git"
+REPO_URL="https://github.com/anthuanvasquez/agents-skills.git"
 TEMP_DIR="/tmp/skills-temp-$(date +%s)"
 GLOBAL_SKILLS_DIR="$HOME/.agents/skills"
 PLATFORMS="${PLATFORMS:-}"
@@ -10,12 +10,12 @@ NON_INTERACTIVE=0
 SOURCE_DIR_OVERRIDE=""
 
 usage() {
-  echo "Usage: $0 [--platforms <none|gemini|copilot|all|csv>] [--non-interactive] [--source-dir <path>]"
+  echo "Usage: $0 [--platforms <none|copilot>] [--non-interactive] [--source-dir <path>]"
   echo ""
   echo "Examples:"
   echo "  $0"
   echo "  $0 --platforms all --non-interactive"
-  echo "  PLATFORMS=gemini,copilot $0 --non-interactive"
+  echo "  PLATFORMS=copilot $0 --non-interactive"
 }
 
 parse_args() {
@@ -58,10 +58,7 @@ interactive_platform_prompt() {
   echo ""
   echo "Which AI platforms do you want to configure?"
   echo "- none"
-  echo "- gemini"
   echo "- copilot"
-  echo "- all"
-  echo "You can also combine values, for example: gemini,copilot"
   read -r -p "Select platforms: " OPTIONS
 
   if [ -z "${OPTIONS// }" ]; then
@@ -72,15 +69,14 @@ interactive_platform_prompt() {
   local mapped=""
   local token
   local normalized
+
   normalized="$(printf '%s' "$OPTIONS" | tr '[:upper:]' '[:lower:]')"
   normalized="${normalized//,/ }"
 
   for token in $normalized; do
     case "$token" in
       0) token="none" ;;
-      1) token="gemini" ;;
-      2) token="copilot" ;;
-      3) token="all" ;;
+      1) token="copilot" ;;
     esac
 
     if [ -z "$mapped" ]; then

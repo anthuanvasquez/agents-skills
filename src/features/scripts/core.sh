@@ -12,7 +12,7 @@ skills_normalize_platforms() {
   fi
 
   if [ "$raw" = "all" ]; then
-    printf '%s' "gemini,copilot"
+    printf '%s' "copilot"
     return
   fi
 
@@ -26,7 +26,7 @@ skills_normalize_platforms() {
   IFS=',' read -r -a tokens <<< "$raw"
   for token in "${tokens[@]}"; do
     case "$token" in
-      gemini|copilot)
+      copilot)
         validated+=("$token")
         ;;
       none)
@@ -101,32 +101,20 @@ skills_install_global_payload() {
   cp -r "$source_dir/skills" "$global_dir"
 }
 
-skills_configure_gemini() {
-  local source_dir="$1"
-  local global_dir="$2"
-  mkdir -p "$HOME/.gemini"
-  skills_link_to_global "$global_dir" "$HOME/.gemini/skills"
-  skills_copy_file_if_present "$source_dir/AGENTS.md" "$HOME/.gemini/AGENTS.md"
-}
-
 skills_install_copilot_plugin() {
   local source_dir="$1"
-  local plugin_dir="$HOME/.copilot/installed-plugins/_direct/github--anthuanvasquez--skills"
-  local repo_url="https://github.com/anthuanvasquez/skills.git"
+  local plugin_dir="$HOME/.copilot/plugins/agents-skills"
+  local repo_url="https://github.com/anthuanvasquez/agents-skills.git"
 
   mkdir -p "$(dirname "$plugin_dir")"
   skills_path_reset "$plugin_dir"
 
   if [ -f "$source_dir/plugin.json" ]; then
     mkdir -p "$plugin_dir"
-    cd "$source_dir"
-    find . -type f -not -path "./.git/*" | while IFS= read -r file; do
-      local target
-      target="$plugin_dir/$file"
-      mkdir -p "$(dirname "$target")"
-      cp "$file" "$target"
-    done
-    cd - > /dev/null
+    cp "$source_dir/plugin.json" "$plugin_dir/plugin.json"
+    cp "$source_dir/mcp.json" "$plugin_dir/mcp.json"
+    cp -r "$source_dir/skills" "$plugin_dir/skills"
+    cp -r "$source_dir/com.github.copilot" "$plugin_dir/com.github.copilot"
   else
     git clone --depth 1 "$repo_url" "$plugin_dir"
   fi
@@ -143,29 +131,15 @@ skills_cleanup_unselected_platforms() {
   local normalized="$1"
 
   case ",$normalized," in
-    *,gemini,*)
-      ;;
-    *)
-      skills_path_reset "$HOME/.gemini/skills"
-      skills_path_reset "$HOME/.gemini/AGENTS.md"
-      ;;
-  esac
-
-  case ",$normalized," in
     *,copilot,*)
       ;;
     *)
-      skills_path_reset "$HOME/.copilot/installed-plugins/_direct/github--anthuanvasquez--skills"
       skills_path_reset "$HOME/.copilot/skills"
       skills_path_reset "$HOME/.copilot/AGENTS.md"
       ;;
   esac
 
   # Cleanup legacy platform folders from previous installer versions.
-  skills_path_reset "$HOME/.gemini/antigravity/skills"
-  skills_path_reset "$HOME/.gemini/antigravity/AGENTS.md"
-  skills_path_reset "$HOME/.config/opencode/skills"
-  skills_path_reset "$HOME/.config/opencode/AGENTS.md"
   skills_path_reset "$HOME/.copilot/agents"
 }
 
@@ -196,13 +170,6 @@ skills_install_from_source() {
   skills_install_global_payload "$source_dir" "$global_dir"
 
   skills_cleanup_unselected_platforms "$normalized"
-
-  case ",$normalized," in
-    *,gemini,*)
-      echo "Configuring Google Gemini CLI"
-      skills_configure_gemini "$source_dir" "$global_dir"
-      ;;
-  esac
 
   case ",$normalized," in
     *,copilot,*)
