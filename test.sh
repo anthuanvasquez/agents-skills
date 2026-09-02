@@ -7,7 +7,7 @@ PLATFORMS=""
 PLATFORMS_EXPLICIT=0
 
 usage() {
-    echo "Usage: $0 [--platforms <none|gemini|copilot|pi|all|csv>]"
+    echo "Usage: $0 [--platforms <none|copilot|all>]"
     echo "If --platforms is omitted, values are auto-detected from ~/.agents/.skills-install-state"
 }
 
@@ -40,7 +40,7 @@ normalize_platforms() {
     raw="${raw// /}"
 
     if [ "$raw" = "all" ]; then
-        echo "gemini,copilot"
+        echo "copilot"
         return
     fi
 
@@ -108,7 +108,9 @@ echo "Validating global install"
 check_exists "$HOME/.agents/skills"
 check_exists "$HOME/.agents/.skills-install-state"
 
-COPILOT_PLUGIN_DIR="$HOME/.copilot/plugins/agents-skills"
+COPILOT_AGENTS_DIR="$HOME/.copilot/agents"
+COPILOT_PROMPTS_DIR="$HOME/.copilot/prompts"
+COPILOT_INSTRUCTIONS_DIR="$HOME/.copilot/instructions"
 SKILL_NAMES=(
     api-design-principles
     brainstorming
@@ -124,23 +126,16 @@ SKILL_NAMES=(
 
 echo -e "\n--- Validating GitHub Copilot ---"
 if platform_enabled "copilot" "$NORMALIZED_PLATFORMS"; then
-    check_exists "$COPILOT_PLUGIN_DIR/plugin.json"
-    check_exists "$COPILOT_PLUGIN_DIR/skills"
-    check_exists "$COPILOT_PLUGIN_DIR/mcp.json"
-    check_exists "$COPILOT_PLUGIN_DIR/com.github.copilot/agents"
-    check_exists "$COPILOT_PLUGIN_DIR/com.github.copilot/agents/code-reviewer.agent.md"
-    check_exists "$COPILOT_PLUGIN_DIR/com.github.copilot/agents/security-auditor.agent.md"
-    check_exists "$COPILOT_PLUGIN_DIR/com.github.copilot/agents/test-engineer.agent.md"
-    check_exists "$COPILOT_PLUGIN_DIR/com.github.copilot/agents/thinking-partner.agent.md"
-    check_exists "$COPILOT_PLUGIN_DIR/com.github.copilot/commands"
-    check_exists "$COPILOT_PLUGIN_DIR/com.github.copilot/commands/commit.prompt.md"
-
-    echo "Validating Copilot plugin skill payloads"
-    for skill in "${SKILL_NAMES[@]}"; do
-        check_exists "$COPILOT_PLUGIN_DIR/skills/$skill/SKILL.md"
-    done
+    check_exists "$COPILOT_AGENTS_DIR/code-reviewer.agent.md"
+    check_exists "$COPILOT_AGENTS_DIR/security-auditor.agent.md"
+    check_exists "$COPILOT_AGENTS_DIR/test-engineer.agent.md"
+    check_exists "$COPILOT_AGENTS_DIR/thinking-partner.agent.md"
+    check_exists "$COPILOT_PROMPTS_DIR/commit.prompt.md"
+    check_exists "$COPILOT_INSTRUCTIONS_DIR/copilot.instructions.md"
 else
-    check_not_exists "$COPILOT_PLUGIN_DIR"
+    check_not_exists "$COPILOT_AGENTS_DIR"
+    check_not_exists "$COPILOT_PROMPTS_DIR"
+    check_not_exists "$COPILOT_INSTRUCTIONS_DIR"
 fi
 
 if [ $ERRORS -eq 0 ]; then
