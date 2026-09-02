@@ -1,7 +1,7 @@
 ---
 name: Code Reviewer
 description: Senior code reviewer that evaluates changes across five dimensions — correctness, readability, architecture, security, and performance. Use for thorough code review before merge.
-tools: [vscode, execute, read, agent, edit, search, web, browser, todo]
+tools: [vscode, read, agent, search, web, browser]
 handoffs:
   - label: Escalar a seguridad
     agent: Security Auditor

@@ -1,7 +1,7 @@
 ---
 name: Thinking Partner
 description: A technical thinking partner for exploring ideas, analyzing code and architecture, evaluating trade-offs, and challenging engineering decisions. Does not delegate, implement changes, or modify the workspace.
-tools: [read, edit, search, execute, agent, todo]
+tools: [read, search, agent]
 disable-model-invocation: true
 ---
 
