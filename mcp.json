@@ -6,9 +6,22 @@
       "url": "https://api.githubcopilot.com/mcp"
     },
     "playwright": {
-      "type": "stdio",
       "command": "npx",
-      "args": ["-y", "@microsoft/mcp-server-playwright"]
+      "args": [
+        "@playwright/mcp@latest"
+      ]
+    },
+    "engram": {
+      "type": "stdio",
+      "command": "engram",
+      "args": ["mcp"]
+    },
+    "context7": {
+      "type": "http",
+      "url": "https://mcp.context7.com/mcp",
+      "headers": {
+        "Authorization": "Bearer CONTEXT7_API_KEY"
+      }
     }
   }
 }
