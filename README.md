@@ -1,6 +1,6 @@
 # Skills
 
-An [Agent Plugin](https://code.visualstudio.com/docs/agent-customization/agent-plugins) that bundles portable **skills**, **custom agents**, **slash commands**, and **MCP servers** for GitHub Copilot, while also wiring the same skills into Google Gemini CLI and PI.
+An [Agent Plugin](https://code.visualstudio.com/docs/agent-customization/agent-plugins) that bundles portable **skills**, **custom agents**, **slash commands**, and **MCP servers** for GitHub Copilot, while also exposing the same skills as a global `~/.agents/skills` directory usable by any AI tool that follows that convention.
 
 ## Quick Start
 
@@ -10,44 +10,49 @@ Install globally with platform wiring prompts:
 curl -fsSL https://raw.githubusercontent.com/anthuanvasquez/agents-skills/main/install.sh | bash
 ```
 
-Install non-interactive:
+Install non-interactive and wire GitHub Copilot:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/anthuanvasquez/agents-skills/main/install.sh | bash -s -- --platforms gemini,copilot --non-interactive
+curl -fsSL https://raw.githubusercontent.com/anthuanvasquez/agents-skills/main/install.sh | bash -s -- --platforms copilot --non-interactive
 ```
 
-Supported platform values (for both `--platforms` and the interactive prompt):
+Supported platform values:
 
-- `none`
-- `gemini`
-- `copilot`
-- `pi`
-- `all`
-- Comma-separated combinations like `gemini,copilot`
+- `none` — only install skills to `~/.agents/skills`.
+- `copilot` — also copy Copilot-specific assets to the standard user directories.
 
-Default behavior installs `skills/` into `~/.agents/skills`. Selecting `copilot` installs the repository as a Copilot Agent Plugin under `~/.copilot/installed-plugins/_direct/github--anthuanvasquez--skills/`.
+Default behavior installs `skills/` into `~/.agents/skills`.
+
+Selecting `copilot` copies:
+
+- `com.github.copilot/agents/*` → `~/.copilot/agents/`
+- `com.github.copilot/commands/*` → `~/.copilot/prompts/`
+- `com.github.copilot/instructions/*` → `~/.copilot/instructions/`
 
 ## Copilot Agent Plugin
 
-This repository is also a valid Agent Plugins 1.0 package. You can install it directly in VS Code:
+This repository is also a valid Agent Plugins 1.0 package. You can import it as a plugin in VS Code or the GitHub Copilot app without running the install script:
 
 1. Open the Command Palette and run **Chat: Install Plugin From Source**.
 2. Enter `https://github.com/anthuanvasquez/agents-skills`.
 
-Once installed, Copilot discovers:
+When imported as a plugin, Copilot discovers:
 
 - **Skills** from [`skills/`](skills/)
 - **Custom agents** from [`com.github.copilot/agents/`](com.github.copilot/agents/)
 - **Slash commands** (prompt files) from [`com.github.copilot/commands/`](com.github.copilot/commands/)
+- **Instructions** from [`com.github.copilot/instructions/`](com.github.copilot/instructions/)
 - **MCP servers** from [`mcp.json`](mcp.json)
+
+> The global install script does **not** copy `plugin.json` or `mcp.json` into `~/.copilot/`; those are only consumed when the repo is imported as a plugin.
 
 ## Dev Container Feature
 
-This repository ships a Dev Container Feature consumable from GHCR. The feature clones this repository as a Copilot Agent Plugin and wires the skills to Gemini and PI as requested.
+This repository ships a Dev Container Feature consumable from GHCR. The feature installs the skills globally and optionally wires GitHub Copilot.
 
 Feature option:
 
-- `platforms` (string): `none|gemini|copilot|pi|all|csv`
+- `platforms` (string): `none|copilot`
 
 Example:
 
