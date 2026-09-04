@@ -39,7 +39,7 @@ normalize_platforms() {
     raw="$(printf '%s' "$1" | tr '[:upper:]' '[:lower:]')"
     raw="${raw// /}"
 
-    if [ "$raw" = "all" ]; then
+    if [ "$raw" = "copilot" ]; then
         echo "copilot"
         return
     fi
