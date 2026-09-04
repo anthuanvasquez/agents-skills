@@ -11,7 +11,7 @@ skills_normalize_platforms() {
     raw="none"
   fi
 
-  if [ "$raw" = "all" ]; then
+  if [ "$raw" = "copilot" ]; then
     printf '%s' "copilot"
     return
   fi

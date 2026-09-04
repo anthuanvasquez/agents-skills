@@ -19,7 +19,7 @@ resolve_source_dir() {
   local script_dir
   script_dir="$(cd "$(dirname "$0")" && pwd)"
 
-  # Local repository checkout: this script is at src/features/install.sh.
+  # Local repository checkout: this script is at src/skills/install.sh.
   if [ -f "$script_dir/../../plugin.json" ] && [ -f "$script_dir/scripts/core.sh" ]; then
     echo "$script_dir/../.."
     return
@@ -37,7 +37,7 @@ main() {
   source_dir="$(resolve_source_dir)"
 
   # shellcheck source=/dev/null
-  . "$source_dir/src/features/scripts/core.sh"
+  . "$source_dir/src/skills/scripts/core.sh"
 
   skills_install_from_source "$source_dir" "$PLATFORMS" "$GLOBAL_SKILLS_DIR"
 }

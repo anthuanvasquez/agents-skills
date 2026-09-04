@@ -94,7 +94,7 @@ load_core() {
 
   if [ -n "$SOURCE_DIR_OVERRIDE" ]; then
     source_dir="$SOURCE_DIR_OVERRIDE"
-  elif [ -d "skills" ] && [ -f "plugin.json" ] && [ -f "src/features/scripts/core.sh" ]; then
+  elif [ -d "skills" ] && [ -f "plugin.json" ] && [ -f "src/skills/scripts/core.sh" ]; then
     source_dir="$(pwd)"
     echo "Using local source files."
   else
@@ -103,7 +103,7 @@ load_core() {
   fi
 
   # shellcheck source=/dev/null
-  . "$source_dir/src/features/scripts/core.sh"
+  . "$source_dir/src/skills/scripts/core.sh"
   SKILLS_SOURCE_DIR="$source_dir"
 }
 

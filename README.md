@@ -1,4 +1,4 @@
-# Skills
+# Agents Skills
 
 An [Agent Plugin](https://code.visualstudio.com/docs/agent-customization/agent-plugins) that bundles portable **skills**, **custom agents**, **slash commands**, and **MCP servers** for GitHub Copilot, while also exposing the same skills as a global `~/.agents/skills` directory usable by any AI tool that follows that convention.
 
@@ -59,7 +59,7 @@ Example:
 ```json
 {
 	"features": {
-		"ghcr.io/anthuanvasquez/agents-skills/features:latest": {
+		"ghcr.io/anthuanvasquez/agents-skills/skills:latest": {
 			"platforms": "copilot"
 		}
 	}

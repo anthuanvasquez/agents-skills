@@ -1,7 +1,7 @@
 {
-  "id": "agent-skills",
-  "version": "0.3.0",
-  "name": "Skills",
+  "id": "skills",
+  "version": "0.4.0",
+  "name": "Agents Skills",
   "description": "Installs global AI skills to ~/.agents/skills and optionally wires GitHub Copilot",
   "documentationURL": "https://github.com/anthuanvasquez/agents-skills",
   "installsAfter": [

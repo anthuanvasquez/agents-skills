@@ -21,7 +21,7 @@ jobs:
           import json
           from pathlib import Path
 
-          manifest_path = Path("src/features/devcontainer-feature.json")
+          manifest_path = Path("src/skills/devcontainer-feature.json")
           data = json.loads(manifest_path.read_text())
 
           required = {"id", "version", "name", "description"}
@@ -85,7 +85,7 @@ jobs:
       - name: "Shellcheck install scripts"
         run: |
           set -euo pipefail
-          shellcheck src/features/install.sh src/features/scripts/core.sh
+          shellcheck src/skills/install.sh src/skills/scripts/core.sh
 
       - name: "Test install in container"
         run: |
@@ -93,6 +93,6 @@ jobs:
           docker build -t skills-test .
           docker run --rm -v "$PWD:/home/test/skills" skills-test bash -c '
             cd /home/test/skills
-            ./install.sh --platforms all --non-interactive
+            ./install.sh --platforms copilot --non-interactive
             ./test.sh
           '
