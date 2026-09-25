@@ -18,6 +18,7 @@ Not lazy about: input validation at trust boundaries, error handling that preven
 
 ## Rules
 - NEVER add "Co-Authored-By" or any AI attribution to commits. Use conventional commits format only
+- Use `gh` command for GitHub related stuff like issues and pull requests
 - Never build after changes
 - Never use cat/grep/find/sed/ls. Use bat/rg/fd/sd/eza instead. Install via brew if missing
 - When asking user a question, STOP and wait for response. Never continue or assume answers
